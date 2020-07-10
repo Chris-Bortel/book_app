@@ -23,8 +23,13 @@ app.use(express.static('./public'));
 //////////////////////////////////////////////////
 ////// Routes
 //////////////////////////////////////////////////
-app.use('/', handleHomePage);
-app.use('/searches', handleSearches); // 304 error
+app.get('/', handleHomePage);
+app.get('/hello', (req, res) => {
+  res.render('index');
+});
+app.get('/searches/new', handleNewSearches); // 304 error
+
+
 
 app.use('*', handleNotFound); // any route not found
 app.use(handleError);
@@ -40,19 +45,15 @@ app.listen(process.env.PORT, () => console.log(`Server is running on ${process.e
 //////////////////////////////////////////////////
 ////// Route Handlers
 //////////////////////////////////////////////////
-
-app.get('/hello', (req, res) => {
-  res.render('index');
-});
-
 function handleHomePage(req, res) {
   res.status(200).send(`('/') Route working`);
   console.log('this is searches');
 }
 
-function handleSearches(req, res) {
-  res.status(200).send(`searches`);
+function handleNewSearches(req,res) {
+  res.render('pages/searches/new');
 }
+
 
 
 
