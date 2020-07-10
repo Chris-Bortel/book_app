@@ -15,4 +15,10 @@ app.use(morgan("dev"));
 // Allows us to get form POST
 app.use(express.urlencoded({ extended: true }));
 
+// connects server.js to e
+app.use(express.static('./view'))
+
 app.listen(process.env.PORT, () => console.log(`Server is running on ${process.env.PORT}`));
+
+
+
