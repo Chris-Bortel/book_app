@@ -8,6 +8,7 @@ const express = require('express');
 // const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
+// const { render } = require( 'ejs' );
 const app = express();
 // const client = new pg.Client(process.env.something);
 
@@ -21,11 +22,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 
 //////////////////////////////////////////////////
-////// Routes
+////// Routes  // These 
 //////////////////////////////////////////////////
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
-
+app.post('/searches', handleGoogleAPI);
 
 
 app.use('*', handleNotFound); // any route not found
@@ -47,23 +48,17 @@ function handleHomePage(req, res) {
 }
 
 function handleNewSearches(req,res) {
-  res.render('pages/searches/new');
+  res.status(200).render('pages/searches/new'); // actual file path
+}
+
+function handleGoogleAPI(req, res) {
+  res.status(200).render('pages/searches/show');
+
 }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+///////////// Error Handlers
 
 function handleNotFound(req, res) {
   res.status(404).send('404 Error: This is not the route you are looking for');
