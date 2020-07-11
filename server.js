@@ -28,11 +28,13 @@ app.use(express.static('./public'));
 // EJS Connects server.js to views
 app.set('view engine', 'ejs');
 
+
+// TODO: I think that this is why the db is not regeris TODO: GETTING   LISTENING on port undefined
 client.connect(() => {
   app.listen(PORT, () => {
     console.log(`listening on port ${PORT}.`);
-  })
-})
+  });
+});
 
 //////////////////////////////////////////////////
 ////// Routes  // These
@@ -70,7 +72,7 @@ function handleGoogleAPI(req, res) {
   const API = 'https://www.googleapis.com/books/v1/volumes?q=boobs';
   let queryObjeect = {
     q: intitle, inauthor,
-  }
+  };
 
   superagent
     .get(API)
@@ -78,12 +80,12 @@ function handleGoogleAPI(req, res) {
     .then(data => {
       let results = data.body.items.map(result => {
         console.log(results);
-        return new Books()
+        return new Books();
 
-      })
-      
-    })
-  
+      });
+
+    });
+
   res.status(200).render('pages/searches/show');
 
 }
@@ -106,6 +108,8 @@ function handleError(error, req, res, next) {
   console.log(error);
   res.status(500).send('500 Fly you fools!');
 }
+
+// TODO: need to make a handler that will render the error file
 
 
 
