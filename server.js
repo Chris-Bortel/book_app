@@ -30,6 +30,7 @@ app.set('view engine', 'ejs');
 
 
 // TODO: I think that this is why the db is not regeris TODO: GETTING   LISTENING on port undefined
+// TODO: do we need a SELECT statement?
 client.connect(() => {
   app.listen(PORT, () => {
     console.log(`listening on port ${PORT}.`);
