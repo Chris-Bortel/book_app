@@ -1,28 +1,38 @@
 'use strict';
 
+const PORT = process.env.PORT;
 require('dotenv').config();
 
 // NPM packages
 const express = require('express');
 // const superagent = require('superagent');
-// const pg = require('pg');
+const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
-// const { render } = require( 'ejs' );
+
 const app = express();
-// const client = new pg.Client(process.env.something);
+const client = new pg.Client(process.env.DATABASE_URL);
+
 
 // Express dependencies
 app.use(cors());
 app.use(morgan('dev'));
 
-// EJS Connects server.js to views
-app.set('view engine', 'ejs');
 
 // Allows us to get form POST
 app.use(express.urlencoded({ extended: true }));
-// static ensures everything stays the same
+
+// gives us a public folder
 app.use(express.static('./public'));
+
+// EJS Connects server.js to views
+app.set('view engine', 'ejs');
+
+client.connect(() => {
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}.`);
+  })
+})
 
 //////////////////////////////////////////////////
 ////// Routes  // These
