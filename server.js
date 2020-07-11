@@ -12,17 +12,20 @@ const morgan = require('morgan');
 const app = express();
 // const client = new pg.Client(process.env.something);
 
+// Express dependencies
 app.use(cors());
 app.use(morgan('dev'));
+
 // EJS Connects server.js to views
-app.set('view engine', 'ejs'); 
+app.set('view engine', 'ejs');
+
 // Allows us to get form POST
 app.use(express.urlencoded({ extended: true }));
 // static ensures everything stays the same
 app.use(express.static('./public'));
 
 //////////////////////////////////////////////////
-////// Routes  // These 
+////// Routes  // These
 //////////////////////////////////////////////////
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
@@ -47,10 +50,12 @@ function handleHomePage(req, res) {
   res.status(200).render('index');
 }
 
+// Gets input data
 function handleNewSearches(req,res) {
   res.status(200).render('pages/searches/new'); // actual file path
 }
 
+// Renders API data
 function handleGoogleAPI(req, res) {
   res.status(200).render('pages/searches/show');
 
