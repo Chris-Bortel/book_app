@@ -24,9 +24,6 @@ app.use(express.static('./public'));
 ////// Routes
 //////////////////////////////////////////////////
 app.get('/', handleHomePage);
-app.get('/hello', (req, res) => {
-  res.render('index');
-});
 app.get('/searches/new', handleNewSearches); // 304 error
 
 
@@ -46,8 +43,7 @@ app.listen(process.env.PORT, () => console.log(`Server is running on ${process.e
 ////// Route Handlers
 //////////////////////////////////////////////////
 function handleHomePage(req, res) {
-  res.status(200).send(`('/') Route working`);
-  console.log('this is searches');
+  res.status(200).render('index');
 }
 
 function handleNewSearches(req,res) {
