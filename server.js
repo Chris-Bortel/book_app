@@ -5,7 +5,7 @@ require('dotenv').config();
 
 // NPM packages
 const express = require('express');
-// const superagent = require('superagent');
+const superagent = require('superagent');
 const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -63,22 +63,21 @@ function handleNewSearches(req,res) {
 
 // Renders API data
 function handleGoogleAPI(req, res) {
-  const API = 'https://www.googleapis.com/books/v1/volumes?q=boobs';
-  let queryObjeect = {
-    q: intitle, inauthor,
+  const API = 'https://www.googleapis.com/books/v1/volumes';
+  let queryObject = {
+    q: `${req.body.title_author}:${req.body.search_query}`
   };
+  console.log(res);
 
-  superagent
-    .get(API)
-    .query(queryObject)
-    .then(data => {
-      let results = data.body.items.map(result => {
-        console.log(results);
-        return new Books();
-
-      });
+  superagent.get(API).query(queryObject).then(data => {
+    console.log(queryObject);
+    let bookResults = data.body.items.map(result => {
+      return new Books(result);
 
     });
+
+    console.log(bookResults);
+  });
 
   res.status(200).render('pages/searches/show');
 
@@ -90,7 +89,7 @@ function Books(obj) {
   this.title = obj.volumeInfo.title;
   this.author = obj.volumeInfo.authors;
   this.description = obj.volumeInfo.description;
-  this.image_url = obj.volumeInfo.imageLinks;
+  this.image_url = obj.volumeInfo.imageLinks.thumbnail;
 }
 
 
