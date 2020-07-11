@@ -8,49 +8,66 @@ const express = require('express');
 // const pg = require('pg');
 const cors = require('cors');
 const morgan = require('morgan');
-
-// Dependencies
-// const client = new pg.Client(process.env.something);
+// const { render } = require( 'ejs' );
 const app = express();
+// const client = new pg.Client(process.env.something);
+
 app.use(cors());
-app.use(morgan("dev"));
-
-// Connects server.js to ejs files
-app.set('view engine', 'ejs');
-
+app.use(morgan('dev'));
+// EJS Connects server.js to views
+app.set('view engine', 'ejs'); 
 // Allows us to get form POST
 app.use(express.urlencoded({ extended: true }));
-
 // static ensures everything stays the same
 app.use(express.static('./public'));
 
-
-// Runs whenever we have an error
-app.use(errorHandler);
-app.get('/', routeHandler);
-
-
-app.get('/hello', (req, res) => {
-  res.render('index');
-});
-
-// any route not found
-app.use('*', notFoundHandler);
+//////////////////////////////////////////////////
+////// Routes  // These 
+//////////////////////////////////////////////////
+app.get('/', handleHomePage);
+app.get('/searches/new', handleNewSearches); // 304 error
+app.post('/searches', handleGoogleAPI);
 
 
-function routeHandler(req, res) {
-  res.status(200).send('Route working')
+app.use('*', handleNotFound); // any route not found
+app.use(handleError);
+
+
+//////////////////////////////////////////////////
+////// Start Server
+//////////////////////////////////////////////////
+
+app.listen(process.env.PORT, () => console.log(`Server is running on ${process.env.PORT}`));
+
+
+//////////////////////////////////////////////////
+////// Route Handlers
+//////////////////////////////////////////////////
+function handleHomePage(req, res) {
+  res.status(200).render('index');
 }
 
-// If the route is not found, this will run
-function notFoundHandler(req, res) {
-  res.status(404).send('404 Error: This is not the route you are looking for')
+function handleNewSearches(req,res) {
+  res.status(200).render('pages/searches/new'); // actual file path
 }
 
-function errorHandler(error, req, res, next) {
+function handleGoogleAPI(req, res) {
+  res.status(200).render('pages/searches/show');
+
+}
+
+
+
+///////////// Error Handlers
+
+function handleNotFound(req, res) {
+  res.status(404).send('404 Error: This is not the route you are looking for');
+}
+
+function handleError(error, req, res, next) {
   console.log(error);
   res.status(500).send('500 Fly you fools!');
 }
 
 
-app.listen(process.env.PORT, () => console.log(`Server is running on ${process.env.PORT}`));
+
