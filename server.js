@@ -13,11 +13,9 @@ const morgan = require('morgan');
 const app = express();
 const client = new pg.Client(process.env.DATABASE_URL);
 
-
 // Express dependencies
 app.use(cors());
 app.use(morgan('dev'));
-
 
 // Allows us to get form POST
 app.use(express.urlencoded({ extended: true }));
@@ -37,36 +35,31 @@ client.connect(() => {
   });
 });
 
-//////////////////////////////////////////////////
+
 ////// Routes  // These
-//////////////////////////////////////////////////
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
 app.post('/searches', handleGoogleAPI);
-
 
 app.use('*', handleNotFound); // any route not found
 app.use(handleError);
 
 
-//////////////////////////////////////////////////
 ////// Start Server
-//////////////////////////////////////////////////
-
 app.listen(process.env.PORT, () => console.log(`Server is running on ${process.env.PORT}`));
 
 
-//////////////////////////////////////////////////
 ////// Route Handlers
-//////////////////////////////////////////////////
 function handleHomePage(req, res) {
   res.status(200).render('index');
 }
+
 
 // Gets input data
 function handleNewSearches(req,res) {
   res.status(200).render('pages/searches/new'); // actual file path
 }
+
 
 // Renders API data
 function handleGoogleAPI(req, res) {
@@ -99,8 +92,9 @@ function Books(obj) {
   this.description = obj.volumeInfo.description;
   this.image_url = obj.volumeInfo.imageLinks;
 }
-///////////// Error Handlers
 
+
+///////////// Error Handlers
 function handleNotFound(req, res) {
   res.status(404).send('404 Error: This is not the route you are looking for');
 }
