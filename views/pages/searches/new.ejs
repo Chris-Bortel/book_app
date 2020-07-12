@@ -1,14 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <%- include('/layout/head') %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-  <header>
-    <%- include('/layout/header') %>
-  </header>
-
-  <main>
   
   <form method="post" action="/searches">
     <div>
@@ -16,47 +13,16 @@
     </div>
     <div>
       <label for="title">Title</label>
-      <input type="radio" name="radio button" value="title" >
+      <input type="radio" name="radiobutton" value="intitle" >
     </div>
     <div>
       <label for="author">Author</label>
-      <input type="radio" name="radio button" value="author" >
+      <input type="radio" name="radiobutton" value="inauthor" >
     </div>
     <div>
       <button type="submit">Search the Google Books API</button>
     </div>
   </form>
-</main>
 
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <%- include('../layout/head') %>
-  </head>
-  <body>
-    <header>
-      <%- include('../layout/header') %>
-    </header>
-    
-    <main>
-      <section class="create-view container">
-        <h2 class="view-title">Add a New Task</h2>
-        <form id="create-form" action="/searches" method="post">
-          <fieldset>
-            <legend>Add a task</legend>
-            <input type="text" name="title" placeholder="Task">
-            <textarea name="description" placeholder="Description of the task" cols="30" rows="10"></textarea>
-            <input type="text" name="category" placeholder="Category">
-            <input type="text" name="contact" placeholder="Contact Person">
-            <input type="hidden" name="status" value="not done">
-            <button type="submit">Add This Task</button>
-          </fieldset>
-        </form>
-      </section>
-    </main>
-  </body>
-</html> -->

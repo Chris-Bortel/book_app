@@ -60,24 +60,26 @@ function handleNewSearches(req,res) {
   res.status(200).render('pages/searches/new'); // actual file path
 }
 
-
 // Renders API data
 function handleGoogleAPI(req, res) {
+  // console.log('this is Req.Body ++++++++++++++++++++', req.body);
   const API = 'https://www.googleapis.com/books/v1/volumes';
   let queryObject = {
-    q: `${req.body.title_author}:${req.body.search_query}`
+    q: `${req.body.searchField}:${req.body.radiobutton}`
   };
-  console.log(res);
+  console.log(queryObject);
 
   superagent.get(API).query(queryObject).then(data => {
-    console.log(queryObject);
-    let bookResults = data.body.items.map(result => {
-      return new Books(result);
+   res.send(data.body.items.volumes_info);
 
-    });
 
-    console.log(bookResults);
-    res.status(200).render('pages/searches/show', { data: bookResults });
+
+    // let bookResults = data.body.items.map(result => {
+    //   return new Books(result);
+
+    // });
+    // console.log(bookResults);
+    // res.status(200).render('pages/searches/show', { data: bookResults });
   });
 
 }
