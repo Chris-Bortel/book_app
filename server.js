@@ -79,17 +79,19 @@ function handleGoogleAPI(req, res) {
     console.log(bookResults);
   });
 
-  res.status(200).render('pages/searches/show');
+  res.status(200).render('pages/searches/show', { data: bookResults });
 
 }
 
 
 /////////////// Constructor function
 function Books(obj) {
+
+
   this.title = obj.volumeInfo.title;
   this.author = obj.volumeInfo.authors;
   this.description = obj.volumeInfo.description;
-  this.image_url = obj.volumeInfo.imageLinks.thumbnail;
+  this.image_url = obj.volumeInfo.imageLinks.thumbnail ? obj.volumeInfo.imageLinks.thumbnail : 'https://i.imgur.com/J5LVHEL.jpg';
 }
 
 
