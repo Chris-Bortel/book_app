@@ -77,16 +77,14 @@ function handleGoogleAPI(req, res) {
     });
 
     console.log(bookResults);
+    res.status(200).render('pages/searches/show', { data: bookResults });
   });
-
-  res.status(200).render('pages/searches/show', { data: bookResults });
 
 }
 
 
 /////////////// Constructor function
 function Books(obj) {
-
 
   this.title = obj.volumeInfo.title;
   this.author = obj.volumeInfo.authors;
