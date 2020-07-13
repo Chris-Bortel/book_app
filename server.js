@@ -25,7 +25,7 @@ app.use('*', handleNotFound); // any route not found
 
 ////// Route Handlers
 function handleHomePage(req, res) {
-  let SQL = 'SELECT * FROM booksNOPE';
+  let SQL = 'SELECT * FROM books';
 
   client.query(SQL).then((results) => {
     console.log('RESLUTS FORM DB++++++++++++', results);
