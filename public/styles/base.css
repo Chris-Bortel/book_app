@@ -5,4 +5,13 @@
 
 body {
   background-color: #bada55;
+  text-align: center;
+}
+
+
+
+div { 
+  border: 1px solid black;
+  width: 50%;
+  margin: 20px auto;
 }

@@ -26,13 +26,15 @@ app.use(handleError);
 
 ////// Route Handlers
 function handleHomePage(req, res) {
-  // let SQL = 'SELECT * FROM books';
+  let SQL = 'SELECT * FROM books';
 
-  // client.query(SQL)
-  //   .then(results => {
-  //     console.log('RESLUTS FORM DB++++++++++++', results);
-  //   });
-  res.render('pages/index');
+  client.query(SQL)
+    .then(results => {
+      console.log('RESLUTS FORM DB++++++++++++', results);
+      let dbResultArr = results.rows; 
+      let rowAmount = results.rowCount;
+      res.render('pages/index', { array : dbResultArr, rows : rowAmount});
+    });
 
 
 }
