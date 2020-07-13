@@ -26,7 +26,15 @@ app.use(handleError);
 
 ////// Route Handlers
 function handleHomePage(req, res) {
-  res.status(200).render('index');
+  // let SQL = 'SELECT * FROM books';
+
+  // client.query(SQL)
+  //   .then(results => {
+  //     console.log('RESLUTS FORM DB++++++++++++', results);
+  //   });
+  res.render('pages/index');
+
+
 }
 
 function handleNewSearches(req, res) {
@@ -71,4 +79,3 @@ client.connect(() => {
     console.log(`listening on port ${PORT}.`);
   });
 });
-// TODO: need to make a handler that will render the error file
