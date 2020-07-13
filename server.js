@@ -15,28 +15,24 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 
-
 ////// Routes  // These
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
 app.post('/searches', handleGoogleAPI);
+app.get('/books/:id', handleBooksDetails);
 app.use('*', handleNotFound); // any route not found
 app.use(handleError);
-
 
 ////// Route Handlers
 function handleHomePage(req, res) {
   let SQL = 'SELECT * FROM books';
 
-  client.query(SQL)
-    .then(results => {
-      console.log('RESLUTS FORM DB++++++++++++', results);
-      let dbResultArr = results.rows; 
-      let rowAmount = results.rowCount;
-      res.render('pages/index', { array : dbResultArr, rows : rowAmount});
-    });
-
-
+  client.query(SQL).then((results) => {
+    console.log('RESLUTS FORM DB++++++++++++', results);
+    let dbResultArr = results.rows;
+    let rowAmount = results.rowCount;
+    res.render('pages/index', { array: dbResultArr, rows: rowAmount });
+  });
 }
 
 function handleNewSearches(req, res) {
@@ -57,6 +53,10 @@ function handleGoogleAPI(req, res) {
     });
 }
 
+function handleBooksDetails(req, res) {
+  res.render('pages/books/show');
+}
+
 function Books(obj) {
   this.title = obj.volumeInfo.title;
   this.author = obj.volumeInfo.authors;
@@ -64,6 +64,8 @@ function Books(obj) {
   this.image_url = obj.volumeInfo.imageLinks.thumbnail
     ? obj.volumeInfo.imageLinks.thumbnail
     : 'https://i.imgur.com/J5LVHEL.jpg';
+  this.isbn =
+    obj.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not found';
 }
 
 ///////////// Error Handlers
