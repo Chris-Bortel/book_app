@@ -5,19 +5,15 @@
  
   </head>
   <body>
-    <header>
+    <header> 
+      <%- include ( '../layout/header.ejs' ) %>
       <h1> <%= rows %> Saved Books</h1>
     </header>
     <section>
 
       <% array.forEach( book => { %>
 
-      <div>
-      <img src=  "<%= book.image_url %>" alt="">
-      <h2> <%= book.title %> </h2>
-      <h3> <%= book.author %> </h3>
-      <button> View Details </button>
-      </div>
+        <%- include ( 'books/detail' , {book : book}) %>
       <% }) %>
 
     </section>

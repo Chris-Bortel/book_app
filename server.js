@@ -40,6 +40,7 @@ function handleNewSearches(req, res) {
   res.status(200).render('pages/searches/new'); // actual file path
 }
 
+// for /searches
 function handleGoogleAPI(req, res) {
   const API = 'https://www.googleapis.com/books/v1/volumes';
   let queryObject = {
@@ -50,12 +51,13 @@ function handleGoogleAPI(req, res) {
     .query(queryObject)
     .then((data) => {
       let bookResults = data.body.items.map((result) => new Books(result));
-      res.render('./pages/searches/show', { data: bookResults });
+      res.render('./pages/searches/show', { data : bookResults });
     });
 }
 
 function handleBooksDetails(req, res) {
-  res.render('pages/books/show');
+  // let SQL = ''
+  // res.render('./pages/books/show', { array : });
 }
 
 function Books(obj) {
@@ -65,8 +67,8 @@ function Books(obj) {
   this.image_url = obj.volumeInfo.imageLinks.thumbnail
     ? obj.volumeInfo.imageLinks.thumbnail
     : 'https://i.imgur.com/J5LVHEL.jpg';
-  this.isbn =
-    obj.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not found';
+  this.isbn = obj.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not found';
+  this.bookshelf = '';
 }
 
 ///////////// Error Handlers
