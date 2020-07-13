@@ -57,7 +57,10 @@ function handleGoogleAPI(req, res) {
 
 function handleBooksDetails(req, res) {
   // let SQL = ''
-  // res.render('./pages/books/show', { array : });
+  //need capture id parameter
+  // make a sql request and request all info for that specific book
+  // select from book WHERE id Matches idParam
+  // res.render('./pages/books/show', { book : });
 }
 
 function Books(obj) {
