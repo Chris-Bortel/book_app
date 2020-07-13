@@ -1,104 +1,74 @@
-"use strict";
+'use strict';
 
-const PORT = process.env.PORT;
-require("dotenv").config();
-
-// NPM packages
-const express = require("express");
-const superagent = require("superagent");
-const pg = require("pg");
-const cors = require("cors");
-const morgan = require("morgan");
-
+require('dotenv').config();
+const express = require('express');
+const superagent = require('superagent');
+const pg = require('pg');
+const morgan = require('morgan');
+const cors = require('cors');
+const PORT = process.env.PORT || 3000;
 const app = express();
 const client = new pg.Client(process.env.DATABASE_URL);
-
-// Express dependencies
 app.use(cors());
-app.use(morgan("dev"));
-
-// Allows us to get form POST
+app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('./public'));
+app.set('view engine', 'ejs');
 
-// gives us a public folder
-app.use(express.static("./public"));
-
-// EJS Connects server.js to views
-app.set("view engine", "ejs");
-
-// TODO: I think that this is why the db is not regeris TODO: GETTING   LISTENING on port undefined
-// TODO: do we need a SELECT statement?
-client.connect(() => {
-  app.listen(PORT, () => {
-    console.log(`listening on port ${PORT}.`);
-  });
-});
 
 ////// Routes  // These
-app.get("/", handleHomePage);
-app.get("/searches/new", handleNewSearches); // 304 error
-app.post("/searches", handleGoogleAPI);
-
-app.use("*", handleNotFound); // any route not found
+app.get('/', handleHomePage);
+app.get('/searches/new', handleNewSearches); // 304 error
+app.post('/searches', handleGoogleAPI);
+app.use('*', handleNotFound); // any route not found
 app.use(handleError);
 
-////// Start Server
-app.listen(process.env.PORT, () =>
-  console.log(`Server is running on ${process.env.PORT}`)
-);
 
 ////// Route Handlers
 function handleHomePage(req, res) {
-  res.status(200).render("index");
+  res.status(200).render('index');
 }
 
-// Gets input data
 function handleNewSearches(req, res) {
-  res.status(200).render("pages/searches/new"); // actual file path
+  res.status(200).render('pages/searches/new'); // actual file path
 }
 
-// Renders API data
 function handleGoogleAPI(req, res) {
-  // console.log('this is Req.Body ++++++++++++++++++++', req.body);
-  const API = "https://www.googleapis.com/books/v1/volumes";
+  const API = 'https://www.googleapis.com/books/v1/volumes';
   let queryObject = {
     q: `${req.body.searchField}:${req.body.radiobutton}`,
   };
-  // console.log(queryObject);
-
   superagent
     .get(API)
     .query(queryObject)
     .then((data) => {
-      let bookResults = data.body.items.map((result) => {
-        return new Books(result);
-        // });
-        // console.log(bookResults);
-        // res.status(200).render('pages/searches/show', { data: bookResults });
-      });
-
-      res.send(bookResults);
+      let bookResults = data.body.items.map((result) => new Books(result));
+      res.render('./pages/searches/show', { data: bookResults });
     });
 }
 
-/////////////// Constructor function
 function Books(obj) {
   this.title = obj.volumeInfo.title;
   this.author = obj.volumeInfo.authors;
   this.description = obj.volumeInfo.description;
   this.image_url = obj.volumeInfo.imageLinks.thumbnail
     ? obj.volumeInfo.imageLinks.thumbnail
-    : "https://i.imgur.com/J5LVHEL.jpg";
+    : 'https://i.imgur.com/J5LVHEL.jpg';
 }
 
 ///////////// Error Handlers
 function handleNotFound(req, res) {
-  res.status(404).send("404 Error: This is not the route you are looking for");
+  res.status(404).send('404 Error: This is not the route you are looking for');
 }
 
 function handleError(error, req, res, next) {
   console.log(error);
-  res.status(500).send("500 Fly you fools!");
+  res.status(500).send('500 Fly you fools!');
 }
 
+client.connect(() => {
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}.`);
+  });
+});
 // TODO: need to make a handler that will render the error file
