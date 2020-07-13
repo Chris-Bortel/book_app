@@ -21,18 +21,19 @@ app.get('/searches/new', handleNewSearches); // 304 error
 app.post('/searches', handleGoogleAPI);
 app.get('/books/:id', handleBooksDetails);
 app.use('*', handleNotFound); // any route not found
-app.use(handleError);
+// app.use('/error', handleError);
 
 ////// Route Handlers
 function handleHomePage(req, res) {
-  let SQL = 'SELECT * FROM books';
+  let SQL = 'SELECT * FROM booksNOPE';
 
   client.query(SQL).then((results) => {
     console.log('RESLUTS FORM DB++++++++++++', results);
     let dbResultArr = results.rows;
     let rowAmount = results.rowCount;
     res.render('pages/index', { array: dbResultArr, rows: rowAmount });
-  });
+  })
+    .catch(error => handleError(error, res));
 }
 
 function handleNewSearches(req, res) {
@@ -73,9 +74,9 @@ function handleNotFound(req, res) {
   res.status(404).send('404 Error: This is not the route you are looking for');
 }
 
-function handleError(error, req, res, next) {
-  console.log(error);
-  res.status(500).send('500 Fly you fools!');
+function handleError(error, res) {
+  console.log('this is an error++++++++', error);
+  res.render('pages/error', { error: 'There is an error'});
 }
 
 client.connect(() => {
