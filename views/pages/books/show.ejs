@@ -2,22 +2,21 @@
 <html lang="en">
   <head>
     <%- include ( '../../layout/head' ) %>
-  
   </head>
   <body>
     <header>
       <%- include ( '../../layout/header.ejs' ) %>
-      <h1> Saved Books</h1>
+      <h1>Saved Books</h1>
     </header>
 
-
     <section>
-
-      
-        <%- include ( 'detail' , {book : book}) %>
-      
-
+      <div>
+        <img src="<%= book.image_url %>" alt="" />
+        <h2><%= book.title %></h2>
+        <h3><%= book.author %></h3>
+        <p><%= book.isbn %></p>
+        <p><%= book.description %></p>
+      </div>
     </section>
-    
   </body>
 </html>
