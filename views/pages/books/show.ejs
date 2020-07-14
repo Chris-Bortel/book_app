@@ -6,9 +6,16 @@
   </head>
   <body>
     <header>
+      <%- include ( '../../layout/header.ejs' ) %>
       <h1> Saved Books</h1>
     </header>
-  
+
+
+    <section>
+
+      
+        <%- include ( 'books/detail' , {book : book}) %>
+      
 
     </section>
     
