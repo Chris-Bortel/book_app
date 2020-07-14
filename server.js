@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
 app.post('/searches', handleGoogleAPI);
-app.get('/books/:id', handleBooksDetails);
+app.get('/books/:monkeys', handleBooksDetails);
 app.use('*', handleNotFound); // any route not found
 // app.use('/error', handleError);
 
@@ -56,11 +56,18 @@ function handleGoogleAPI(req, res) {
 }
 
 function handleBooksDetails(req, res) {
-  // let SQL = ''
+  // res.send(req.params.monkeys);
+  let SQL = 'SELECT * FROM books WHERE id=$1';
+  let values = [req.params.monkeys]; 
+
+  client.query(SQL, values).then(results => { 
+ 
+    res.render('pages/books/show', { book : results.rows[0]});
+
+  });
   //need capture id parameter
   // make a sql request and request all info for that specific book
   // select from book WHERE id Matches idParam
-  // res.render('./pages/books/show', { book : });
 }
 
 function Books(obj) {
@@ -70,6 +77,7 @@ function Books(obj) {
   this.image_url = obj.volumeInfo.imageLinks.thumbnail
     ? obj.volumeInfo.imageLinks.thumbnail
     : 'https://i.imgur.com/J5LVHEL.jpg';
+    //is it better to use ternary operators?
   this.isbn = obj.volumeInfo.industryIdentifiers[0].identifier || 'ISBN not found';
   this.bookshelf = '';
 }
