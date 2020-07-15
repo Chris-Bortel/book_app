@@ -76,10 +76,10 @@ function handleSelectedBooks(req, res) {
   client.query(SQL, values).then(results => {
     
     let dbEntries = results.rows[0];
-    let show = '';
-    // res.send(dbEntries);
+    // let show = '';
+    res.send(dbEntries);
     // res.render('pages/searches/show', { data : dbEntries });
-    res.redirect('/books/:id', {book : dbEntries });
+    res.redirect( '/' );
   });
 
 
