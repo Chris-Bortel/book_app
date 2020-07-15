@@ -19,7 +19,7 @@ app.set('view engine', 'ejs');
 app.get('/', handleHomePage);
 app.get('/searches/new', handleNewSearches); // 304 error
 app.post('/searches', handleGoogleAPI);
-app.get('/books/:monkeys', handleBooksDetails);
+app.get('/books/:id', handleBooksDetails);
 app.post('/books', handleSelectedBooks);
 app.use('*', handleNotFound); // any route not found
 // app.use('/error', handleError);
@@ -57,9 +57,9 @@ function handleGoogleAPI(req, res) {
 }
 
 function handleBooksDetails(req, res) {
-  // res.send(req.params.monkeys);
+  // res.send(req.params.id);
   let SQL = 'SELECT * FROM books WHERE id=$1';
-  let values = [req.params.monkeys];
+  let values = [req.params.id];
 
   client.query(SQL, values).then(results => {
 
@@ -75,10 +75,11 @@ function handleSelectedBooks(req, res) {
 
   client.query(SQL, values).then(results => {
     
-    let dbEntry = results.rows[0];
+    let dbEntries = results.rows[0];
     // let show = '';
-
-    res.send(dbEntry);
+    res.send(dbEntries);
+    // res.render('pages/searches/show', { data : dbEntries });
+    // res.redirect( '/' );
   });
 
 
