@@ -4,6 +4,7 @@
 }
 
 body {
+  display: grid;
   background-color: rgb(155, 153, 153);
   text-align: center;
   height: 100vh;
@@ -11,8 +12,4 @@ body {
 
 }
 
-div { 
-  border: 1px solid black;
-  width: 50%;
-  margin: 20px auto;
-}
+
