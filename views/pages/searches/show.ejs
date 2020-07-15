@@ -4,15 +4,24 @@
     <%- include ( '../../layout/head' ) %>
   </head>
   <body>
+    
+    <header>
+      <%- include('../../layout/header') %>
+    </header>  
+    
+    <h1 class="sub-header">Search Results</h1>
     <section>
 
       <% data.forEach( book => { %>
 
-      <div>
+      <div class="book-container">
       <img src=  "<%= book.image_url %>" alt="">
       <h2> <%= book.title %> </h2>
-      <h3> <%= book.author %> </h3>
-      <p> <%= book.description %> </p>
+      <h3 class="author"> <%= book.author %> </h3>
+     
+      <article>
+        <p class="desription"> <%= book.description %> </p>
+      </article>
       </div>
       <% }) %>
 
