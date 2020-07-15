@@ -4,28 +4,35 @@
     <%- include ( '../../layout/head' ) %>
   </head>
   <body>
-    
     <header>
       <%- include('../../layout/header') %>
-    </header>  
-    
+    </header>
+
     <h1 class="sub-header">Search Results</h1>
+
+    <% data.forEach( book => { %>
     <section>
-
-      <% data.forEach( book => { %>
-
       <div class="book-container">
-      <img src=  "<%= book.image_url %>" alt="">
-      <h2> <%= book.title %> </h2>
-      <h3 class="author"> <%= book.author %> </h3>
-     
-      <article>
-        <p class="desription"> <%= book.description %> </p>
-      </article>
-      </div>
-      <% }) %>
+        <img src="<%= book.image_url %>" alt="" />
+        <h2><%= book.title %></h2>
+        <h3 class="author"><%= book.author %></h3>
+        <article>
+          <p class="desription"><%= book.description %></p>
+        </article>
 
+        <form method="post" action="/books">
+          <fieldset>
+            <input type="hidden" name="title" value="<%= book.title %>">
+            <input type="hidden" name="author" value="<%= book.author %>">
+            <input type="hidden" name="isbn" value="<%= book.isbn %>">
+           <input type="hidden" name="image_url" value="<%= book.image_url %>">
+           <!-- <input type="hidden" name="description" value="<%= book.description %>"> -->
+         
+            <button type="submit">Select this Book</button>
+          </fieldset>
+        </form>
+      </div>
     </section>
-    
+    <% }) %>
   </body>
 </html>
