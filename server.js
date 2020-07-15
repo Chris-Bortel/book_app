@@ -79,7 +79,7 @@ function handleSelectedBooks(req, res) {
     // let show = '';
     res.send(dbEntries);
     // res.render('pages/searches/show', { data : dbEntries });
-    res.redirect( '/' );
+    // res.redirect( '/' );
   });
 
 
